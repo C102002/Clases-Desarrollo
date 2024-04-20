@@ -38,11 +38,11 @@ class Compuesto extends component{
     }
 }
 let p1:Compuesto;
-let e:string='e'
+let example:string='e'
 for (let i=0; i<100;i++){
-    let e= new elemento();
-    if (i===0)  p1=new Compuesto(e)
-    else p1.add(e)
+    let example= new elemento();
+    if (i===0)  p1=new Compuesto(example)
+    else p1.add(example)
 }
 
 

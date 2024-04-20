@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Optional = void 0;
 var Optional = /** @class */ (function () {
     function Optional(value) {
         this.value = value;
@@ -20,6 +23,7 @@ var Optional = /** @class */ (function () {
     };
     return Optional;
 }());
+exports.Optional = Optional;
 // let optional=new Optional<string>(undefined)
 var optional = new Optional('hola');
 console.log(optional.hasValue());

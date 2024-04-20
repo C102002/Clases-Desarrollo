@@ -1,5 +1,6 @@
 interface Silla{
     patas:number
+    // desing:string
     test():void;
 }
 
@@ -12,6 +13,7 @@ interface Mesa{
 
 class SillaMadera implements Silla{
     patas:number;
+    desing: string;
 
     test():void{
         console.log('silla madera');
@@ -24,6 +26,7 @@ class SillaMadera implements Silla{
 
 class SillaPlastico implements Silla{
     patas:number;
+    desing: string;
 
     test():void{
         console.log('silla plastico');
@@ -77,6 +80,13 @@ class FabricaMadera implements AbstractFactory{
 
 class FabricaPlastico implements AbstractFactory{
     //NT: Porque aca permite que se pueda hacer una mesa si deberia dar un tipo silla? es por el polimorfismo
+    //Solucion: Porque cumplia con los traibutos y metodos de la interfaz, al agregar otro atributo distinto da error
+    //
+    // antes silla { patas: number y test()void} mesa{ patas:number, test()void y estilo:string}
+    // createProductA(): Silla {                      
+    //     return new MesaPlastico()           NT: Cumple la interfaz
+    // }
+
     createProductA(): Silla {
         return new MesaPlastico()
     }

@@ -1,4 +1,4 @@
-class Optional <T>{
+ export class Optional <T>{
     private value: T|undefined;
     private assigned:boolean;
     
