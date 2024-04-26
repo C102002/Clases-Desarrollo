@@ -9,19 +9,19 @@
     }
 
     hasValue():boolean{
-        if (this.value) return this.assigned=true;
+        if (this.value!==undefined) {return this.assigned=true;}
         else return this.assigned=false;
     }
 
     getValue():T{
         if (this.hasValue()) return this.value
-        else throw new DOMException   
+        else  throw new Error('Error el tipo de dato es undefiend')   
     }
 }
 
 // let optional=new Optional<string>(undefined)
-let optional=new Optional<string>('hola')
+// let optional=new Optional<string>('hola')
 
 
-console.log(optional.hasValue());
-console.log(optional.getValue());
+// console.log(optional.hasValue());
+// console.log(optional.getValue());

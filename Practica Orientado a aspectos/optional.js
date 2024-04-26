@@ -10,8 +10,9 @@ var Optional = /** @class */ (function () {
             this.assigned = false;
     }
     Optional.prototype.hasValue = function () {
-        if (this.value)
+        if (this.value !== undefined) {
             return this.assigned = true;
+        }
         else
             return this.assigned = false;
     };
@@ -19,12 +20,12 @@ var Optional = /** @class */ (function () {
         if (this.hasValue())
             return this.value;
         else
-            throw new DOMException;
+            throw new Error('Error el tipo de dato es undefiend');
     };
     return Optional;
 }());
 exports.Optional = Optional;
 // let optional=new Optional<string>(undefined)
-var optional = new Optional('hola');
-console.log(optional.hasValue());
-console.log(optional.getValue());
+// let optional=new Optional<string>('hola')
+// console.log(optional.hasValue());
+// console.log(optional.getValue());
