@@ -1,5 +1,1 @@
-{
-"scripts": {
-    "build": "tsc"
-  }
-}
+{"scripts":{"build":"tsc"},"dependencies":{"ts-node":"^10.9.2"}}
