@@ -1,11 +1,13 @@
 import { Optional } from "../../../../Practica Orientado a aspectos/helpers/Optional"
 import { Result } from "../../../../Practica Orientado a aspectos/helpers/Result"
+import { Subscription } from "../../domain/class/Subscription"
 import { SubscriptionState } from "../../domain/class/SubscriptionState"
 import { ISubscriptionRepository } from "../../domain/interfaces/ISubsctiptionRepository"
+import { Subscriber } from "../../shared/Subscriber"
 import { IEmailSender } from "../interfaces/IEmailSender"
 import { IService } from "../interfaces/IService"
 
-export class BirthDayReniewInvalidNotificationService implements IService <number,boolean> {
+export class BirthDayReniewInvalidNotificationService implements IService <number,boolean> , Subscriber <Subscription> {
     message:string
     emailSender:IEmailSender<boolean>
     subsRepository:ISubscriptionRepository
@@ -30,5 +32,9 @@ export class BirthDayReniewInvalidNotificationService implements IService <numbe
         this.message=message
         this.emailSender=pushService
         this.subsRepository=subService
+    }
+    update(context: Subscription): Result<boolean> {
+        this.execute(context.getUserUUID())
+        return Result.makeResult(true)
     }
 }

@@ -18,8 +18,7 @@ export class Subscription{
         this.subscirptionState=subscirption
         this.user=user
     }
-    getUserUUID():Number{return this.idUser}
+    getUserUUID():number{return this.idUser}
     getUser():User{return this.user}
     getreniewSubscription():Date{return this.RenewSubscription}
-    getS
 }

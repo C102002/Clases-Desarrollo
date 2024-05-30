@@ -4,7 +4,9 @@ import { IPushSender } from '../interfaces/IPushSender';
 import { Optional } from '../../../../Practica Orientado a aspectos/helpers/Optional';
 import { ISubscriptionRepository } from '../../domain/interfaces/ISubsctiptionRepository';
 import { SubscriptionState } from '../../domain/class/SubscriptionState';
-export class BirthDayNotificationService implements IService <number,boolean> {
+import { Subscriber } from '../../shared/Subscriber';
+import { Subscription } from '../../domain/class/Subscription';
+export class BirthDayNotificationService implements IService <number,boolean> , Subscriber <Subscription>  {
     message:string
     pushSender:IPushSender<boolean>
     subsRepository:ISubscriptionRepository
@@ -23,5 +25,9 @@ export class BirthDayNotificationService implements IService <number,boolean> {
         this.message=message
         this.pushSender=pushService
         this.subsRepository=subService
+    }
+    update(context: Subscription): Result<boolean> {
+        this.execute(context.getUserUUID())
+        return Result.makeResult(true)
     }
 }

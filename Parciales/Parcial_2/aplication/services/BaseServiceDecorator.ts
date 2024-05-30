@@ -3,8 +3,12 @@ import { IService } from "../interfaces/IService";
 
 export class BaseServiceDecorator implements IService <number,boolean>
 {
-
+    private wrapper: IService<number,boolean>
     execute(params: number): Result<boolean> {
-        throw new Error("Method not implemented.");
+        return this.wrapper.execute(params)
+    }
+    constructor(wrapper: IService<number,boolean>)
+    {
+        this.wrapper=wrapper
     }
 }

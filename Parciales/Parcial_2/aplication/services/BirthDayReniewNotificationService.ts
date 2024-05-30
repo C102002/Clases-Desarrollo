@@ -5,7 +5,9 @@ import { Optional } from '../../../../Practica Orientado a aspectos/helpers/Opti
 import { ISubscriptionRepository } from '../../domain/interfaces/ISubsctiptionRepository';
 import { SubscriptionState } from '../../domain/class/SubscriptionState';
 import { IEmailSender } from '../interfaces/IEmailSender';
-export class BirthDayReniewNotificationService implements IService <number,boolean> {
+import { Subscriber } from '../../shared/Subscriber';
+import { Subscription } from '../../domain/class/Subscription';
+export class BirthDayReniewNotificationService implements IService <number,boolean>  , Subscriber <Subscription> {
     message:string
     emailSender:IEmailSender<boolean>
     subsRepository:ISubscriptionRepository
@@ -30,5 +32,9 @@ export class BirthDayReniewNotificationService implements IService <number,boole
         this.message=message
         this.emailSender=pushService
         this.subsRepository=subService
+    }
+    update(context: Subscription): Result<boolean> {
+        this.execute(context.getUserUUID())
+        return Result.makeResult(true)
     }
 }
