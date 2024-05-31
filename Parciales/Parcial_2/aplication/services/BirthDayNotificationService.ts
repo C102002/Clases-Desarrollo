@@ -6,6 +6,12 @@ import { ISubscriptionRepository } from '../../domain/interfaces/ISubsctiptionRe
 import { SubscriptionState } from '../../domain/class/SubscriptionState';
 import { Subscriber } from '../../shared/Subscriber';
 import { Subscription } from '../../domain/class/Subscription';
+
+export class UserNotFoundError extends Error{
+    constructor() {
+        super('Error Usuario No encontrado')
+    }
+}
 export class BirthDayNotificationService implements IService <number,boolean> , Subscriber <Subscription>  {
     message:string
     pushSender:IPushSender<boolean>
@@ -13,8 +19,9 @@ export class BirthDayNotificationService implements IService <number,boolean> , 
 
     execute(params: number): Result<boolean> {
         let subAnswer= new Optional(this.subsRepository.findSubscriptionByUserID(params))
-        if (!subAnswer.hasValue()) return Result.makeError(new Error(`Error no esta el usuario de la subscripcion ${params}`))
-        let sub=subAnswer.getValue()
+        //if (!subAnswer.hasValue()) return Result.makeError(new Error(`Error no esta el usuario de la subscripcion ${params}`))
+        if (!subAnswer.hasValue()) return Result.makeError(new UserNotFoundError())
+            let sub=subAnswer.getValue()
         if (sub.subscirptionState===SubscriptionState.Valid){
             this.pushSender.send(sub.getUser().getToken()|| '54654645',this.message)
             Result.makeResult(true)

@@ -6,7 +6,12 @@ import { SubscriptionOfUSersBirthdayService } from "../domain/services/Subscript
 import { Subject } from "./Subject";
 import { Subscriber } from './Subscriber';
 
-export class EventObserver <Subscription> implements Subject <Subscription,boolean>{
+export class EventObserver implements Subject <Subscription,boolean>{
+
+    public subscribers: Subscriber<Subscription>[]=[]
+    public userRepo:IUserRepository
+    public subRepo:ISubscriptionRepository
+    
     subscribe(subscriber: Subscriber<Subscription>): void {
         this.subscribers.push(subscriber)
         // console.log('Agregado servicio',subscriber);
@@ -21,22 +26,15 @@ export class EventObserver <Subscription> implements Subject <Subscription,boole
         
         let service = new SubscriptionOfUSersBirthdayService(this.userRepo,this.subRepo)
         
-        
         let subResult= service.findSubsOfUSersTodaysBirthDay()
-        if (!subResult.isError()) return  Result.makeError(new Error('Error consiguiendo cumpleañeros'))
-        subResult.getValue().forEach((sub)=>{
-            console.log(sub);
-            for (const subscriber of this.subscribers) {               
-                
+        if (subResult.isError()) return  Result.makeError(new Error('Error consiguiendo cumpleañeros'))
+        this.subscribers.forEach((sub)=>{
+            for (const subscriber of subResult.getValue()) {      
+                sub.update(subscriber)
             }
     })
     return Result.makeResult(true)
     }
-
-    private subscribers: Subscriber<Subscription>[]=[]
-    public userRepo:IUserRepository
-    public subRepo:ISubscriptionRepository
-
     constructor(userService:IUserRepository,serviceSub:ISubscriptionRepository){
         this.userRepo=userService
         this.subRepo=serviceSub

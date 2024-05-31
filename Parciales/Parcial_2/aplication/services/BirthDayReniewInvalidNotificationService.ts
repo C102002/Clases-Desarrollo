@@ -34,6 +34,8 @@ export class BirthDayReniewInvalidNotificationService implements IService <numbe
         this.subsRepository=subService
     }
     update(context: Subscription): Result<boolean> {
+        // console.log('llego');
+        
         this.execute(context.getUserUUID())
         return Result.makeResult(true)
     }
