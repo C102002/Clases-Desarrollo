@@ -12,8 +12,11 @@ class GenericBackup<T> implements GenericMemento <T>{
     getState():T{
         return this.state
     }
+    static create<T>(state:T){
+        return new GenericBackup<T>(state)
+    }
     constructor(state:T) {
-        this.concreteMemento(state)
+        this.state=state
     }
 }
 
@@ -46,9 +49,12 @@ class Historial <T>{
     }
     undo(){
         let memento=this.history.pop()
+        if(memento)
         this.originator.restore(memento)
     }
 }
+
+//Example
 
 class Video{
     minuto: number;
@@ -68,7 +74,7 @@ let historialVideos= new Historial<Video>(Reproducer)
 console.log('Creado el reproducer');
 console.log(historialVideos.originator.state);
 
-for (let i=0;i<=100;i++){
+for (let i=0;i<100;i++){
     let newvideo =new Video(i,'planeta vegetta')
     let Reproducer= new GenericOriginator<Video>(newvideo)
     historialVideos.save(Reproducer)

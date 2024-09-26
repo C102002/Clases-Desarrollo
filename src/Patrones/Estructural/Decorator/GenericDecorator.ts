@@ -57,9 +57,14 @@ class EncryptionDecorator <T> extends DataSourceDecorator<T>{
     }
 }
 
-let file= new FileDataSource<number>(123);
+let file=new DataSourceDecorator<number>(
+    new FileDataSource<number>(123)
+)
+
+new FileDataSource<number>(123);
 
 let datasource= new DataSourceDecorator<number>(file)
+
 
 datasource.readData()
 datasource.wrapper.readData()
