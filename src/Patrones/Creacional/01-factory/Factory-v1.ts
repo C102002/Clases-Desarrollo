@@ -1,5 +1,4 @@
 
-
 interface  Button {
     doStuff():void
 }
@@ -29,9 +28,7 @@ class Dialog {
         return button
     }
 
-    constructor(private readonly id:string){
-        this.id=id
-    }   
+    constructor(private readonly id:string){}   
 }
 
 class WindowsDialog extends Dialog{
