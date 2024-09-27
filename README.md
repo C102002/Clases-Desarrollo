@@ -24,6 +24,9 @@ $ npm install
 # Running one problem
 $ ts-node main.ts
 
+# Another example
+$ cd .\Parciales\Parcial_1\18-05-2023\
+$ ts-node .\Pregunta-1-v1.ts
 ```
 
 ## Dependencies
@@ -38,7 +41,7 @@ $ ts-node main.ts
 ### Ts-node v10.9.2
 
 <p align="center">
-  <a href="https://www.typescriptlang.org/" target="blank"><img src="./public/ts-node-logo.svg" width="100" alt="Nest Logo" /></a>
+  <a href="https://typestrong.org/ts-node/" target="blank"><img src="./public/ts-node-logo.svg" width="100" alt="Nest Logo" /></a>
   <p align="center">Ts-node is a TypeScript execution engine and REPL for Node.js.
   It JIT transforms TypeScript into JavaScript, enabling you to directly execute TypeScript on Node.js without precompiling. This is accomplished by hooking node's module loading APIs, enabling it to be used seamlessly alongside other Node.js tools and libraries.</p>
 </p>
