@@ -1,5 +1,5 @@
 // Estructura
-class Car{
+class CarV2{
     seats:number
     enginePower:number
     tripComputer?:boolean
@@ -14,7 +14,7 @@ class Car{
     setGps(){this.gps=true}
 }
 
-class Manual{
+class ManualV2{
     seats?:number
     enginePower?:number
     tripComputer?:boolean
@@ -27,16 +27,17 @@ class Manual{
     setGps(){this.gps=true}
 }
 //TODO Se puede mejorar el diseño con programacion generica haciendo getResult():T en el builder
-interface Builder{
+interface IBuilder <T>{
     reset():void
     setSeats(number:number):void
     setEngine(power:number):void
     setTripComputer():void
     setGPS():void
+    getResult():T
 }
 
-class Director {
-    constructor(private builder:Builder){}
+class DirectorV2 <T,E> {
+    constructor(private builder:IBuilder<T|E>){}
     makeSUV(){
         this.builder.reset()
         this.builder.setEngine(500)
@@ -50,14 +51,14 @@ class Director {
         this.builder.setSeats(2)
         this.builder.setTripComputer()
     }
-    changeBuilder(builder:Builder) {this.builder=builder}
+    changeBuilder(builder:IBuilder<E>) {this.builder=builder}
     get Builder() {return this.builder}
 }
 
-class CarBuilder implements Builder{
-    constructor(private car:Car){}
+class CarBuilderV2 implements IBuilder<CarV2>{
+    constructor(private car:CarV2){}
     reset(): void {
-        this.car= new Car()
+        this.car= new CarV2()
     }
     setSeats(number: number): void {
         this.car.setSeats(number)
@@ -71,15 +72,15 @@ class CarBuilder implements Builder{
     setGPS(): void {
         this.car.setGps()
     }
-    getResult():Car{
+    getResult():CarV2{
         return this.car
     }
 }
 
-class CarManualBuilder implements Builder{
-    constructor(private manual:Manual){}
+class CarManualBuilderV2 implements IBuilder<ManualV2>{
+    constructor(private manual:ManualV2){}
     reset(): void {
-        this.manual= new Manual("uuid")
+        this.manual= new ManualV2("uuid")
     }
     setSeats(number: number): void {
         this.manual.setSeats(number)
@@ -93,32 +94,32 @@ class CarManualBuilder implements Builder{
     setGPS(): void {
         this.manual.setGps()
     }
-    getResult():Manual{
+    getResult():ManualV2{
         return this.manual
     }
 }
 
 //Implementacion
 
-let carBuilder= new CarBuilder(new Car())
+let carBuilderV2= new CarBuilderV2(new CarV2())
 
-let director= new Director(carBuilder)
+let directorV2= new DirectorV2<CarV2,ManualV2>(carBuilderV2)
 
-director.makeSUV()
-const suvCar=carBuilder.getResult()
-director.makeSports()
-const sportsCar=carBuilder.getResult()
+directorV2.makeSUV()
+const suvCarV2=carBuilderV2.getResult()
+directorV2.makeSports()
+const sportsCarV2=carBuilderV2.getResult()
 
 
-let carManualBuilder= new CarManualBuilder(new Manual("454464"))
-director.changeBuilder(carManualBuilder)
+let carManualBuilderV2= new CarManualBuilderV2(new ManualV2("454464"))
+directorV2.changeBuilder(carManualBuilderV2)
 
-director.makeSUV()
-const suvCarManual=carManualBuilder.getResult()
-director.makeSports()
-const sportCarManual=carManualBuilder.getResult()
+directorV2.makeSUV()
+const suvCarManualV2=carManualBuilderV2.getResult()
+directorV2.makeSports()
+const sportCarManualV2=carManualBuilderV2.getResult()
 
-console.log("Sports Car:",sportsCar)
-console.log("Sports Manual:",sportCarManual)
-console.log("Suv Car:",suvCar)
-console.log("Suv Manual:",suvCarManual)
+console.log("Sports Car:",sportsCarV2)
+console.log("Sports Manual:",sportCarManualV2)
+console.log("Suv Car:",suvCarV2)
+console.log("Suv Manual:",suvCarManualV2)
