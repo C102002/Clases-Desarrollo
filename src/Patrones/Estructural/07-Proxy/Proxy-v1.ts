@@ -1,3 +1,4 @@
+//Estructura
 interface ServiceInterface{
     operation():void
 }
@@ -17,30 +18,31 @@ class Service{
     }
 }
 
-class Proxy{
+class PublicProxy{
     realService:Service
     Proxy(s:Service){
         this.realService=s
     }
     checkAccess(user:User):boolean{
-        if (user.name==='alfredo') return (true)
-            else return false
+        return (user.name==='alfredo')
     }
     operation(user:User){
         if(this.checkAccess(user)) this.realService.operation()
             else console.log('Acces Denied');
-            
-        return
     }
+    constructor(service:Service){this.realService=service}
 }
-
+///Implementacion 
 const user={
     name:'pepe',
     username:''
 }
 
 let Googleservice = new Service('Google')
-let proxy= new Proxy();
+let proxy= new PublicProxy(Googleservice)
 proxy.Proxy(Googleservice);
 
 proxy.operation(user)
+
+//  Esperando
+// Acces Denied
