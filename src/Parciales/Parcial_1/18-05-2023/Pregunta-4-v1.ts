@@ -1,3 +1,5 @@
+//NT: Asi no es porque aca la forma no va a determinar a los vecinos, sino que los vecinos implemente son un arreglo de casillas
+//que esta MAL
 abstract class Casilla <F,V>{
     vecinos:Casilla<F,V>[]=[]
     valor:V

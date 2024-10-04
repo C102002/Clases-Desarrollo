@@ -1,52 +1,59 @@
 //Estructura
-interface ServiceV2Interface{
-    operation():void
+interface IDataBase{
+    saveUser(user:UserV2):void
 }
-
-interface User{
+enum Role{
+    privigilated,
+    common,
+    admin
+}
+interface UserV2{
     name:string;
     username:string;
+    role:Role
 }
 
-class ServiceV2{
-    name:string
-    operation(){
-        console.log(`ServiceV2 ${this.name}`);
+class PostgresDataBase implements IDataBase{
+    saveUser(user: UserV2): void {
+        console.log(`Save user with data: ${JSON.stringify(user)}`);
     }
-    constructor(name:string){
-        this.name=name;
+    constructor(){}
+}
+
+class PostgresDataBaseProxy implements IDataBase{
+    constructor(private readonly service:IDataBase) {}
+    saveUser(user: UserV2): void {
+        if (this.checkAccess(user))
+            this.service.saveUser(user)
+    }
+    checkAccess(user:UserV2){
+        if (user.role===Role.common){
+            throw new Error(`User role invalid, with data:${JSON.stringify(user)}`)
+        }
+        else return true
     }
 }
 
-class PublicProxyV2{
-    realServiceV2:ServiceV2
-    Proxy(s:ServiceV2){
-        this.realServiceV2=s
-    }
-    checkAccess(user:User):boolean{
-        return (user.name==='alfredo')
-    }
-    operation(user:User){
-        if(this.checkAccess(user)) this.realServiceV2.operation()
-            else console.log('Acces Denied');
-    }
-    constructor(serviceV2:ServiceV2){this.realServiceV2=serviceV2}
+//Implementacion
+
+let postgresDB= new PostgresDataBase()
+let postgresDBProxy= new PostgresDataBaseProxy (postgresDB)
+
+let userV2:UserV2={
+    username:"test",
+    name:"pedro",
+    role:Role.common
 }
-///Implementacion 
-let userV2:User={
-    name:'pepe',
-    username:''
+let user2V2:UserV2={
+    username:"test",
+    name:"jose",
+    role:Role.admin
 }
 
-let GoogleserviceV2 = new ServiceV2('Google')
-let proxyV2= new PublicProxyV2(GoogleserviceV2)
-proxy.Proxy(GoogleserviceV2);
+// postgresDBProxy.saveUser(userV2)
+//Esperado
+//Error: User role invalid, with data:{"username":"test","name":"pedro","role":1}
 
-proxy.operation(userV2)
-
-let user2V2:User={
-    name:'alfredo',
-    username:''
-}
-//  Esperando
-// Acces Denied
+postgresDBProxy.saveUser(user2V2)
+//Esperado
+// Save user with data: {"username":"test","name":"jose","role":2}

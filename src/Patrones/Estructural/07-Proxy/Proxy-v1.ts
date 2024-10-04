@@ -33,7 +33,7 @@ class PublicProxy{
     constructor(service:Service){this.realService=service}
 }
 ///Implementacion 
-const user={
+const user:User={
     name:'pepe',
     username:''
 }
@@ -44,5 +44,13 @@ proxy.Proxy(Googleservice);
 
 proxy.operation(user)
 
+const user2:User={
+    name:'pedro',
+    username:'pedorPerez'
+}
+
+proxy.operation(user2)
+
 //  Esperando
-// Acces Denied
+//  Acces Denied
+//  Service Google

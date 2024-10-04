@@ -4,7 +4,7 @@ interface Handler{
 }
 
 class BaseHandler implements Handler{
-    private next:Handler
+    private next?:Handler
     private name:string
 
     setNext(h:Handler){
