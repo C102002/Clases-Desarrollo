@@ -1,4 +1,3 @@
-import { Optional } from '../../../Parciales/Parcial_3/helpers/Optional';
 //Estructura
 
 enum Validation{
