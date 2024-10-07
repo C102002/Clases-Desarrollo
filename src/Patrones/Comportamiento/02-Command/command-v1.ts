@@ -1,3 +1,4 @@
+//TODO hacerlo mejor
 interface Command {
     execute(): void;
 }
