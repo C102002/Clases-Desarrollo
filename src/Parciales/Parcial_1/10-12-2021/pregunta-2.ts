@@ -50,9 +50,13 @@ class Casilla <T> extends Publisher <T>{
 }
 
 abstract class Restriccion <T> implements ISubscirber<T>{
+    private casillas:Casilla<T>[]=[]
     constructor(
         private restriccion:string
     ) {}
+    addCasilla(c:Casilla<T>){
+        this.casillas.push(c)
+    }
     abstract update(valor :T): boolean 
     get Restriccion(){return this.restriccion}
 }

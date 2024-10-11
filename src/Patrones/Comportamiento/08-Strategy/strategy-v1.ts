@@ -12,6 +12,9 @@ class ContextStrategy{
         console.log('Context Do something');
         this.strategy.execute(data)
     }
+    constructor(s:Strategy){
+        this.strategy=s
+    }
 }
 
 class LowercaseStrategy implements Strategy{
@@ -35,8 +38,7 @@ class UppercaseStrategy implements Strategy{
 let lower =new LowercaseStrategy()
 let upper = new UppercaseStrategy()
 
-let contextStrategy= new ContextStrategy();
-contextStrategy.setStrategy(lower)
+let contextStrategy= new ContextStrategy(lower);
 contextStrategy.do('HoLa soy Sergio')
 
 contextStrategy.setStrategy(upper)
