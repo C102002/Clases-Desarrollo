@@ -18,9 +18,9 @@ class ListIterator <T> implements Iterator<T>{
     ){}
     next(): Optional<T> {
         if (!this.hasnext()) return new Optional<T>(null)
-        const next_value=this.root.getValue()
+        const curret_value=this.root.getValue()
         this.root=this.root.getValue().next
-        return new Optional(next_value.data)
+        return new Optional(curret_value.data)
     }
     hasnext(): boolean {
         return this.root.hasValue()
