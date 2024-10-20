@@ -1,4 +1,4 @@
-import { Optional } from "../helpers/Optional";
+import { Optional } from './../../Practica Orientado a aspectos/Optional';
 
 interface Iterator <T>{
     next():Optional<T>

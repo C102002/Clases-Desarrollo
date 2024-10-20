@@ -1,17 +1,21 @@
-interface ICommand{
-    execute():void
+interface ICommand<E>{
+    execute():E
 }
 
-class Invoker{
+abstract class Invoker <E>{
     constructor(
-        private command:ICommand
+        private command:ICommand<E>
     ){}
-    setCommand(c:ICommand){
+    setCommand(c:ICommand<E>){
         this.command=c
     }
     execute(){
         this.command.execute()
     }
+}
+
+class SwitchInvoker extends Invoker <void>{
+
 }
 
 class ConectionToReciver{
@@ -28,8 +32,8 @@ class Reciver{
     changeFalse(){this.value=false}
 }
 
-class TurnOnCommand implements ICommand{
-    execute(): void {
+class TurnOnCommand implements ICommand <void>{
+    execute():void{
         this.logicBusiness.execute()
         this.reciver.changeTrue()
     }
@@ -39,7 +43,7 @@ class TurnOnCommand implements ICommand{
     ){}
 }
 
-class TurnOffCommand implements ICommand{
+class TurnOffCommand implements ICommand <void>{
     execute(): void {
         this.logicBusiness.execute()
         this.reciver.changeFalse()
@@ -58,7 +62,7 @@ let turnOffCommand= new TurnOffCommand(new ConectionToReciver(),reciver)
 console.log(reciver);
 // Esperando 
 // Reciver { value: false }
-let invoker=new Invoker(turnOnCommand)
+let invoker=new SwitchInvoker(turnOnCommand)
 invoker.execute()
 // Esperando 
 // Me conecte con el receptor
