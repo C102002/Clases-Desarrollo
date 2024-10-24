@@ -1,1 +1,1 @@
-{"scripts":{"build":"tsc"},"dependencies":{"ts-node":"^10.9.2"}}
+{"scripts":{"build":"tsc"},"dependencies":{"ts-node":"^10.9.2","uuid":"^10.0.0"}}
