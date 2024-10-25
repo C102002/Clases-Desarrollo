@@ -44,7 +44,7 @@ class Composite <T> implements Component<T>{
 
 class Mapper{
     constructor(){}
-    cambiar<T,E>(element:Component<T>,f:(e:Component<T>)=>Component<E>):Component<E>{
+    cambiar<T,E>(element:T,f:(e:T)=>E):E{
         return f(element)
     }
 }
@@ -65,13 +65,13 @@ class ComponentVisitorNumberString implements IVisitor <number>{
     visitComponent(c: Composite<number>):void {
         this.visited.push(c)
         this.transformed.push(
-            this.transformComponentNumberToString(c)
+            this.mapper.cambiar(c,this.transformComponentNumberToString)
         )
     }
     visitLeaf(l: Leaf<number>): void{
         this.visited.push(l)
         this.transformed.push(
-            this.transformLeafNumberToString(l)
+            this.mapper.cambiar(l,this.transformLeafNumberToString)
         )
     }
 

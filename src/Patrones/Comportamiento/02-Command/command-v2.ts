@@ -69,6 +69,7 @@ class Aplication{
     editors:IEditor[]=[]
     shorcuts:IshortCut[]=[]
     clipboard:string
+    commandHistory:Command[]=[]
     constructor(
         public currenteditor:IEditor
     ){
@@ -80,6 +81,10 @@ class Aplication{
     }
     addShortcuts(shortcut:IshortCut){
         this.shorcuts.push(shortcut)
+    }
+    execute(command:Command){
+        command.execute()
+        this.commandHistory.push(command)
     }
 }
 
@@ -144,23 +149,30 @@ let pasteshorcut=new PasteShorcut(new PasteCommand(app,editor))
 app.addShortcuts(pasteshorcut)
 app.addButton(copybutton)
 
-
-//antes de copiar
-console.log(editor);
+editor.text='cambio el texto'
 console.log(app.clipboard);
 
-editor.text='Hola como estas? :)'
-copybutton.click()
+app.execute(new CopyCommand(app,editor))
 
-//despues de copiar
-console.log(editor);
 console.log(app.clipboard);
 
-//antes de pegar
-editor.text='Espero que estes bien'
-console.log(editor);
 
-pasteshorcut.do()
+// //antes de copiar
+// console.log(editor);
+// console.log(app.clipboard);
 
-//despues de pegar
-console.log(editor);
+// editor.text='Hola como estas? :)'
+// copybutton.click()
+
+// //despues de copiar
+// console.log(editor);
+// console.log(app.clipboard);
+
+// //antes de pegar
+// editor.text='Espero que estes bien'
+// console.log(editor);
+
+// pasteshorcut.do()
+
+// //despues de pegar
+// console.log(editor);

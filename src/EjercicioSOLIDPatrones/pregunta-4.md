@@ -37,31 +37,60 @@ function CambiarEstructuraComponentNumberToStringDTO(e:Component<number>):Compon
 #Es importante destacar que para proximas clases esta funcion no cumple OCP, pero el codigo del mapper del cambiar todos si es OCP
 ```
 
-## Opcion 2 sin romper SOLID (pero sin cumplir con mapper)
+## Opcion 2 sin romper SOLID
 
 Para hacerlo se utilizao el patron visitor, haciendo que los componentes tengan que implementar los elementos para ser visitados
 De esta Forma si se cumpliria mejor con SOLID y nos evitariamos el uso del instance of, pero ya no usarios el mapper porque no cumple con liskof
 
 ```bash
-    cambiar<T,E>(element:Component<T>,f:(e:Component<T>)=>Component<E>):Component<E>{
+class Mapper{
+    constructor(){}
+    cambiar<T,E>(element:T,f:(e:T)=>E):E{
         return f(element)
     }
+}
 
 # Al implementar f dentro del visitor 
 
-    transformComponentNumberToString(c:Composite<number>)=>Composite<string>
+interface IVisitor <T>{
+    visitComponent(c:Composite<T>):void
+    visitLeaf(l:Leaf<T>):void
+}
 
-    private transformLeafNumberToString(c:Leaf<number>)=>Leaf<string>
+class ComponentVisitorNumberString implements IVisitor <number>{
+    visited:Component<number>[]=[]
+    transformed:Component<string>[]=[]
+    constructor(
+        public mapper:Mapper
+    ){}
+    visitComponent(c: Composite<number>):void {
+        this.visited.push(c)
+        this.transformed.push(
+            this.mapper.cambiar(c,this.transformComponentNumberToString)
+        )
+    }
+    visitLeaf(l: Leaf<number>): void{
+        this.visited.push(l)
+        this.transformed.push(
+            this.mapper.cambiar(l,this.transformLeafNumberToString)
+        )
+    }
 
-# Pero se esta esperando 
+    private transformComponentNumberToString(c:Composite<number>):Composite<string>{
+        return new Composite(c.value.toString())
+    }
 
-    f(e:Component<T>)=>Component<E>
+    private transformLeafNumberToString(c:Leaf<number>):Leaf<string>{
+        return new Leaf(c.value.toString())
+    }
+}
 
-# Rompiendo la covarianza del metodo del mapper
 ```
 
 
 ```bash
+// Iteartor
+
 interface IElementToVisit <T>{
     accept(v:IVisitor <T>):void
 }
@@ -100,5 +129,5 @@ class Composite <T> implements Component<T>{
     }
 
     addelement(e:Component<T>){this.components.push(e)}
-} 
+}
 ```
