@@ -56,30 +56,35 @@ interface IVisitor <T>{
     visitLeaf(l:Leaf<T>):void
 }
 
-class ComponentVisitorNumberString implements IVisitor <number>{
-    visited:Component<number>[]=[]
-    transformed:Component<string>[]=[]
+abstract class ComponentVisitor <T,E> implements IVisitor <T>{
+    visited:Component<T>[]=[]
+    transformed:Component<E>[]=[]
     constructor(
         public mapper:Mapper
     ){}
-    visitComponent(c: Composite<number>):void {
+    visitComponent(c: Composite<T>):void {
         this.visited.push(c)
         this.transformed.push(
-            this.mapper.cambiar(c,this.transformComponentNumberToString)
+            this.mapper.cambiar(c,this.transformComponent)
         )
     }
-    visitLeaf(l: Leaf<number>): void{
+    visitLeaf(l: Leaf<T>): void{
         this.visited.push(l)
         this.transformed.push(
-            this.mapper.cambiar(l,this.transformLeafNumberToString)
+            this.mapper.cambiar(l,this.transformLeaf)
         )
     }
 
-    private transformComponentNumberToString(c:Composite<number>):Composite<string>{
+   abstract transformComponent(c:Composite<T>):Composite<E>
+
+   abstract transformLeaf(c:Leaf<T>):Leaf<E>
+}
+
+class ComponentVisitorNumberString extends ComponentVisitor <number,string>{
+    transformComponent(c: Composite<number>): Composite<string> {
         return new Composite(c.value.toString())
     }
-
-    private transformLeafNumberToString(c:Leaf<number>):Leaf<string>{
+    transformLeaf(c: Leaf<number>): Leaf<string> {
         return new Leaf(c.value.toString())
     }
 }
