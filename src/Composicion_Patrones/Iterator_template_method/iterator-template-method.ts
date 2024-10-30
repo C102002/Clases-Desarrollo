@@ -23,15 +23,16 @@ abstract class BaseListIterator <T> implements IIterator<T>{
     hasnext(): boolean {
         return this.root.hasValue()
     }
-    next():Optional<T>{
+    abstract next():Optional<T>
+} 
+
+class BeginToEndListIterator <T> extends BaseListIterator<T>{
+    next(): Optional<T> {
         if (!this.hasnext()) return new Optional()
         const data=this.root.getValue().value
         this.root=this.root.getValue().next
-        return new Optional(data)
-    }
-} 
-
-class BeginToEndListIterator <T> extends BaseListIterator<T>{}
+        return new Optional(data)    }
+}
 
 
 //TODO No estoy del todo seguro que este bien que lo invierta aca, pero al ser un metodo privado y comportarse igual que el padre no lo veo mal
@@ -41,7 +42,7 @@ class EndToBeginListIterator <T> extends BaseListIterator<T>{
         let reversed:T[]=[]
 
         while(super.hasnext()){
-            let value=super.next()
+            let value=this.next()
             reversed.unshift(value.getValue())
         }
 
@@ -62,7 +63,10 @@ class EndToBeginListIterator <T> extends BaseListIterator<T>{
         this.reverse()
     }
     next():Optional<T>{
-        return super.next()
+        if (!this.hasnext()) return new Optional()
+            const data=this.root.getValue().value
+            this.root=this.root.getValue().next
+            return new Optional(data)
     }
 }
 
@@ -73,7 +77,7 @@ class BeginToBeginListIterator <T> extends BaseListIterator<T>{
         this.initial=root
     }
     next():Optional<T>{
-        let next=super.next()
+        let next=this.next()
         if (next.hasValue()) return next
         if (!this.initial.hasValue()) throw new Error('Debe de tener un inicial')
         return new Optional(this.initial.getValue().value)

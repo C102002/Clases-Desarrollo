@@ -4,4 +4,4 @@
 
 ### Respuesta
 
-![topic page 3](../../../../public/Parciales/Parcial-1/18-10-2022/respuesta-pregunta%203%2018-10-2022.svg)
+![topic page 3](../../../../public/Parciales/Parcial-1/18-10-2022/pregunta%203%20posible%20respuesta.svg)

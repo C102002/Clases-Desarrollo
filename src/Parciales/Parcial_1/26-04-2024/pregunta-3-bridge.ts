@@ -1,7 +1,7 @@
 // estructura
 
-interface Ipolitc{
-    colcardescuento(data:DTOCompra):number
+export interface IPoliticBridge{
+    calcular(data:DTOCompra):number
 }
 
 export interface DTOCompra{
@@ -18,14 +18,16 @@ interface Compra{
 }
 
 export class ServiceCompra {
-    constructor(
-        private businesspolitic:Ipolitc
-    ){}
-    setBusinessPolitic(businessPolitic:Ipolitc){
+    private businesspolitic:IPoliticBridge
+    constructor(p?:IPoliticBridge){
+        if (!p) this.businesspolitic=new CachitosPolitc()
+        else this.businesspolitic=p
+    }
+    setBusinessPolitic(businessPolitic:IPoliticBridge){
         this.businesspolitic=businessPolitic
     }
     compra(data:DTOCompra):Compra{
-        let descuento=this.businesspolitic.colcardescuento(data)
+        let descuento=this.businesspolitic.calcular(data)
         let compra:Compra={
             id:'123',
             monto:descuento
@@ -34,46 +36,46 @@ export class ServiceCompra {
     }
 }
 
-export class CachitosPolitc implements Ipolitc{
-    colcardescuento(data:DTOCompra): number {
+export class CachitosPolitc implements IPoliticBridge{
+    calcular(data:DTOCompra): number {
         let find=data.productos.find((producto)=>producto=='cachito')
         if (find) return 0.10*data.precio
         return 0
     }
 }
 
-class ViejitosPolitic implements Ipolitc{
-    colcardescuento(data:DTOCompra): number {
+export class ViejitosPolitic implements IPoliticBridge{
+    calcular(data:DTOCompra): number {
         if (data.edad>=60) return 0.50*data.precio
         return 0
     }
 }
 
-class CachitosHigherPricePolitc implements Ipolitc{
-    colcardescuento(data:DTOCompra): number {
+export class CachitosHigherPricePolitc implements IPoliticBridge{
+    calcular(data:DTOCompra): number {
         let find=data.productos.find((producto)=>producto=='cachito')
         if (find) return 2*data.precio
         return 0
     }
 }
 
-class ViejitosHigherPricePolitic implements Ipolitc{
-    colcardescuento(data:DTOCompra): number {
+export class ViejitosHigherPricePolitic implements IPoliticBridge{
+    calcular(data:DTOCompra): number {
         if (data.edad>=60) return 6*data.precio
         return 0
     }
 }
 
-abstract class PolitcComplex implements  Ipolitc{
-    private politics:Ipolitc[]=[]
-    colcardescuento(data: DTOCompra): number {
+abstract class PolitcComplex implements  IPoliticBridge{
+    private politics:IPoliticBridge[]=[]
+    calcular(data: DTOCompra): number {
         let value=0
         this.politics.forEach((politic)=>{
-            value+=politic.colcardescuento(data)            
+            value+=politic.calcular(data)            
         })
         return value
     }
-    addPolit(p:Ipolitc){
+    addPolit(p:IPoliticBridge){
         this.politics.push(p)
     }
 }
