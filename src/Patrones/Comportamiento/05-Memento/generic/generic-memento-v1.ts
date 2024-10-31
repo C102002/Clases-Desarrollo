@@ -1,18 +1,17 @@
-import { Result } from '../../../../helpers/Result';
 //estructura
-interface IMemento <S,T,E>{
-    execute(data:T):Result<E>
+interface IMemento <S,T>{
+    execute(data:T):void
     getState():S
     getDate():Date
 }
 
 
-abstract class GenericOriginator <S,T,E> { //Originator
+abstract class GenericOriginator <S,T> { //Originator
     constructor(
         private state:S
     ){}
-    abstract save(data:S):IMemento<S,T,E>
-    restore(m:IMemento<S,T,E>){
+    abstract save(data:S):IMemento<S,T>
+    restore(m:IMemento<S,T>){
         this.changeCurrentState(m.getState())
     }
     changeCurrentState(state:S){
@@ -21,9 +20,9 @@ abstract class GenericOriginator <S,T,E> { //Originator
     currentState(){return this.state}
 }
 
-abstract class GenericMemento <S,T,E> implements IMemento<S,T,E>{
+abstract class GenericMemento <S,T> implements IMemento<S,T>{
     private date:Date
-    abstract execute(data: T):Result<E>
+    abstract execute(data: T):void
     getState() {
         return this.state
     }
@@ -35,9 +34,9 @@ abstract class GenericMemento <S,T,E> implements IMemento<S,T,E>{
     }
 }
 
-abstract class GenericCaretaker <S,T,E>{
-    originator:GenericOriginator<S,T,E>
-    history: IMemento<S,T,E>[]=[]
+abstract class GenericCaretaker <S,T>{
+    originator:GenericOriginator<S,T>
+    history: IMemento<S,T>[]=[]
 
     undo():void{
         if (this.history.length<0) return
@@ -45,8 +44,8 @@ abstract class GenericCaretaker <S,T,E>{
         if (!memento) return
         this.originator.restore(memento)
     }
-    abstract save(originator:GenericOriginator<S,T,E>):void
-    constructor (originator:GenericOriginator<S,T,E>){
+    abstract save(originator:GenericOriginator<S,T>):void
+    constructor (originator:GenericOriginator<S,T>){
         this.originator=originator;
         this.save(originator)
     }
@@ -56,14 +55,14 @@ abstract class GenericCaretaker <S,T,E>{
             console.log(JSON.stringify(memento));
         }
     }
-    getMemento(state:S):IMemento<S,T,E>[]{
+    getMemento(state:S):IMemento<S,T>[]{
         let mementos=this.history.filter(memento=>{
             memento.getState()===state
         })
         return mementos
     }
 
-    getLastMemento():IMemento<S,T,E>{
+    getLastMemento():IMemento<S,T>{
         let last= this.history[this.history.length-1];
         if(last) return last
         else throw new Error('index not found')
@@ -84,26 +83,25 @@ interface UserDataDTO{
     profile?:string
 }
 
-class UserDataMemento extends GenericMemento <UserData,UserDataDTO,string>{
-    execute(data: UserDataDTO): Result<string> {
+class UserDataMemento extends GenericMemento <UserData,UserDataDTO>{
+    execute(data: UserDataDTO): void {
         let s=""
         if (data.name) s.concat(data.name) 
         if (data.password) s.concat(data.password)
         if (data.profile) s.concat(data.profile)
-        return Result.makeResult(s)
     }
 
 }
 
-class UserOriginator extends GenericOriginator <UserData,UserDataDTO,string>{
-    save(data:UserData): IMemento<UserData, UserDataDTO, string> {
+class UserOriginator extends GenericOriginator <UserData,UserDataDTO>{
+    save(data:UserData): IMemento<UserData, UserDataDTO> {
         return new UserDataMemento(data)
     }
     
 }
 
-class UserDataCaretaker extends GenericCaretaker <UserData,UserDataDTO,string>{
-    save(originator: GenericOriginator<UserData, UserDataDTO, string>): void {
+class UserDataCaretaker extends GenericCaretaker <UserData,UserDataDTO>{
+    save(originator: GenericOriginator<UserData, UserDataDTO>): void {
         let memento= new UserDataMemento(originator.currentState())
         this.history.push(memento)
     }

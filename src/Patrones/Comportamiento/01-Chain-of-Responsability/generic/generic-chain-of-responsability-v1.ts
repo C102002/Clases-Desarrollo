@@ -9,11 +9,11 @@ interface IGenericHandler <T,V,E>{
 }
 
 abstract class GenericBaseHandler <T,V,E> implements IGenericHandler<T,V,E>{
-    private next:Optional<IGenericHandler<T,V,E>>= new Optional<IGenericHandler<T,V,E>>(null)
+    private next:Optional<IGenericHandler<T,V,E>>= new Optional<IGenericHandler<T,V,E>>()
 
     handle(data: T, validate:V): Optional<E> {
         if(!this.next.hasValue()) 
-            return new Optional<E>(null);
+            return new Optional<E>();
         return this.next.getValue().handle(data,validate)
     }
     constructor(h?:IGenericHandler<T,V,E>){
@@ -40,7 +40,7 @@ class NumericHandler extends GenericBaseHandler<string,Validation,void>{
             return super.handle(data,validate);
         else
         console.log('process data of:',this.constructor.name,' with data:',data);
-        return new Optional<void>(null)
+        return new Optional<void>()
     }
     canHandle(validate: Validation): boolean {
         return (validate===Validation.numericValidation)
@@ -53,7 +53,7 @@ class ObjectHandler extends GenericBaseHandler<string,Validation,void>{
             return super.handle(data,validate);
         else
         console.log('process data of:',this.constructor.name,' with data:',data);
-        return new Optional<void>(null)
+        return new Optional<void>()
     }
     canHandle(validate: Validation): boolean {
         return (validate===Validation.objectValidation)
@@ -66,7 +66,7 @@ class StringHandler extends GenericBaseHandler<string,Validation,void>{
             return super.handle(data,validate);
         else
         console.log('process data of:',this.constructor.name,' with data:',data);
-        return new Optional<void>(null)
+        return new Optional<void>()
     }
     canHandle(validate: Validation): boolean {
         return (validate===Validation.stringValidation)
