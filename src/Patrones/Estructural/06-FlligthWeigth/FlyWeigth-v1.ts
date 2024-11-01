@@ -23,7 +23,7 @@ class MovingParticle{
     get Speed(){ return this.speed}
 
 }
-//Intrinsic Object Inmutable variable
+//Intrinsic Object Inmutable compartido
 class Particle{
 
     constructor(private color:string,private sprite:string){}
@@ -39,30 +39,29 @@ class Particle{
 }
 
 class Flyweight{
-    private movingParticle:MovingParticle
-    constructor(movingParticle:MovingParticle){
-        this.movingParticle=movingParticle
+    private particle:Particle
+    constructor(particle:Particle){
+        this.particle=particle
     }
-    move(particle:Particle){
-        this.movingParticle.move(particle)
-        const s = JSON.stringify(this.movingParticle);
-        const u = JSON.stringify(particle);
-        console.log(`Flyweight: Displaying shared (${s}) and unique (${u}) state.`);
-        
+    move(movingParticle:MovingParticle){
+        console.log(`soy una particula que se mueve ${movingParticle}`);
+        console.log(`soy una particula mi valor es: ${this.Particle}`);
     }
-    get MovingParticle(){return this.movingParticle}
+    get Particle(){return this.particle}
 }
 //FlywigthFactory Singelton
 class FlyweightFactory{
-    private cache: Map<MovingParticle,Flyweight>=new Map<MovingParticle,Flyweight>()
+    private cache: Map<Particle,Flyweight>=new Map<Particle,Flyweight>()
     
     constructor(){}
 
-    getFlyweigth(movingParticle:MovingParticle):Flyweight{
-        let flyweigth=this.cache.get(movingParticle)
+    getFlyweigth(particle:Particle):Flyweight{
+        let flyweigth=this.cache.get(particle)
+        console.log(this.cache)
+        
         if(!flyweigth){
-            let flyweigth=new Flyweight(movingParticle)
-            this.cache.set(movingParticle,flyweigth)
+            let flyweigth=new Flyweight(particle)
+            this.cache.set(particle,flyweigth)
             return flyweigth
         }
         return flyweigth
@@ -70,13 +69,13 @@ class FlyweightFactory{
 
     getKeys(){return this.cache.keys()}
 }
+//Context
 class Game{
     private particle:Particle
     private flyweigth:Flyweight
-    constructor( particle:Particle, movingParticle:MovingParticle){
+    constructor( particle:Particle, flyweigth:Flyweight){
         this.particle=particle
-        let flygthweigthFactory= new FlyweightFactory()
-        this.flyweigth=flygthweigthFactory.getFlyweigth(movingParticle)
+        this.flyweigth=flyweigth
     }
     move(coords:Coords){
         this.particle.move(coords,5,1)
@@ -85,18 +84,20 @@ class Game{
 }
 
 //Implementacion
-let particle= new Particle("azul","sprite azul")
-let coords:Coords={
-    x:0,
-    y:0
-}
-let movingParticle= new MovingParticle(particle,coords,0,0)
-let game= new Game(particle,movingParticle)
+const factory = new FlyweightFactory();
 
-let coords1:Coords={
-    x:0,
-    y:0
-}
-game.move(coords1)
-const flyweigth=game.Flyweigth
-console.log(flyweigth)
+let flyweigth1=factory.getFlyweigth(new Particle('azul','sprite-azul'))
+let flyweigth2=factory.getFlyweigth(new Particle('azul','sprite-azul'))
+let flyweigth3=factory.getFlyweigth(new Particle('azul','sprite-azul'))
+let flyweigth4=factory.getFlyweigth(new Particle('azul','sprite-azul'))
+
+
+const movingParticle1 = new MovingParticle(flyweigth1.Particle, { x: 10, y: 20 }, 1, 5);
+const movingParticle2 = new MovingParticle(flyweigth2.Particle, { x: 15, y: 25 }, 2, 6);
+const movingParticle3 = new MovingParticle(flyweigth3.Particle, { x: 20, y: 30 }, 3, 7);
+
+movingParticle1.draw();
+movingParticle2.draw();
+movingParticle3.draw();
+
+console.log(factory.getKeys()); // Muestra las claves de las partículas creadas en la fábrica
