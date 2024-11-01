@@ -57,26 +57,27 @@ class SpriteFlyweigthFactory extends AbstractFlyweigthFactory <Sprite>{
         this.cache.set(data,otherflyweigth)
         return otherflyweigth
     }
-
 }
-//TODO hacerlo mejor
 
-// let factory= new SpriteFlyweigthFactory()
-// let sprite=new Sprite('rojo-sprite','rojo')
-// let flrojo=factory.getFlyweigth(sprite)
-// let flazul=factory.getFlyweigth('azul-sprite','azul')
-// let flverde=factory.getFlyweigth('verde-sprite','verde')
-// let flverde2=factory.getFlyweigth('verde-sprite','verde')
+let factory= new SpriteFlyweigthFactory()
+let spriterojo=new Sprite('rojo-sprite','rojo')
+let spriteazul=new Sprite('azul-sprite','azul')
+let spriteverde=new Sprite('verde-sprite','verde')
 
-// let redhammer=new Hammer(0,0,flrojo.Sprite)
-// let bluehammer=new Hammer(1,3,flazul.Sprite)
-// let greenhammer=new Hammer(2,8,flverde.Sprite)
-// let greenhammer2=new Hammer(4,8,flverde.Sprite)
+let flrojo=factory.getFlyweigth(spriterojo)
+let flazul=factory.getFlyweigth(spriteazul)
+let flverde=factory.getFlyweigth(spriteverde)
+let flverde2=factory.getFlyweigth(spriteverde)
 
-// redhammer.draw()
-// bluehammer.draw()
-// greenhammer.draw()
+let redhammer=new Hammer(0,0,flrojo.Intrincic)
+let bluehammer=new Hammer(1,3,flazul.Intrincic)
+let greenhammer=new Hammer(2,8,flverde.Intrincic)
+let greenhammer2=new Hammer(4,8,flverde.Intrincic)
 
-// console.log('--------------------');
-// //NT Esperando que solo hayan 3 estados intrincicos que son los sprites rojo azul y verde
-// console.log(factory.getKeys())
+redhammer.draw()
+bluehammer.draw()
+greenhammer.draw()
+
+console.log('--------------------');
+//NT Esperando que solo hayan 3 estados intrincicos que son los sprites rojo azul y verde
+console.log(factory.getKeys())
