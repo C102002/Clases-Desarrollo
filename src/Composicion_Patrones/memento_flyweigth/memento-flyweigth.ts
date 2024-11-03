@@ -1,4 +1,4 @@
-
+//Quiero hacer un memento de videos combinaods con el patron flyweigth
 interface Memento <T>{
     state:T
     getState():T
