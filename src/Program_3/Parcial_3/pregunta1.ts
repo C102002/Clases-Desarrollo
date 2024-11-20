@@ -50,9 +50,9 @@ let arco= new Arco(espada)
 let martillo= new Martillo(arco)
 
 console.log(`El elemento completo es:`)
-espada.recorrer()
+arco.recorrer()
 
 console.log('-----------------------------')
-let unidad= arco.suprimir(arco)
+let unidad= arco.suprimir(espada)
 unidad.recorrer()
 

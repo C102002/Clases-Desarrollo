@@ -1,4 +1,4 @@
-abstract class Casilla <F,V>{
+export abstract class Casilla <F,V>{
     private vecinos=new Map<F,Casilla<F,V>>()
     constructor(
         public valor:V
@@ -64,10 +64,10 @@ let _casilla3= new CassillaNumericaTriangular(5)
 _casilla.agregarvecino(Triangulo.abajo,_casilla1)
 _casilla.agregarvecino(Triangulo.derecha,_casilla2)
 
-_casilla.recorrer()
+// _casilla.recorrer()
 
 _casilla.agregarvecino(Triangulo.izquierda,_casilla3)
-console.log('-------------------------------------');
+// console.log('-------------------------------------');
 
-_casilla.recorrer()
+// _casilla.recorrer()
 //esperando que como tiene 3 casillas sume que el valor actual de la casilla sea 5+5+5=15
