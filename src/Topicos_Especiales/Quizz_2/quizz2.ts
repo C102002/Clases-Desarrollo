@@ -8,14 +8,14 @@ interface IAction{
     printNumber():void
 }
 
-class Decortaror implements IAction{
+class Decorator implements IAction{
     constructor(private readonly wrapper:IAction){}
     printNumber(): void {
         this.wrapper.printNumber()
     }
 }
 
-class WelcomeDecorator extends Decortaror{
+class WelcomeDecorator extends Decorator{
     constructor(action:IAction,public message:string){
         super(action)
     }
@@ -25,7 +25,7 @@ class WelcomeDecorator extends Decortaror{
     }
 }
 
-class GoodByeDecorator extends Decortaror{
+class GoodByeDecorator extends Decorator{
     constructor(action:IAction,public message:string){
         super(action)
     }
