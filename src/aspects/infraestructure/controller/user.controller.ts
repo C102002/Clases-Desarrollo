@@ -9,6 +9,8 @@ import { NativeLogger } from '../../../common/infraestructure/logger/native-logg
 import { PerformanceDecorator } from "../../../common/application/aspects/performance-decorator/performance-decorator"
 import { NativeTimer } from "../../../common/infraestructure/timer/native-timer"
 import { SecurityDecorator } from "../../../common/application/aspects/security-decorator/security-decorator"
+import { ValidatorDecorator } from '../../../common/application/aspects/validator-decorator/validator-decorator';
+import { AplyCuponValidator } from "../../../common/infraestructure/validator/aply.cupon.validator"
 
 
 export class UserController{
@@ -72,6 +74,43 @@ export class UserController{
                     ),
                     new NativeLogger()
                 ),user,[UserRoles.admin,UserRoles.user]
+            )
+        )
+
+        let response= await service.execute({...data})
+        return response.getValue
+    }
+
+    async aplyCouponDTOValidator(data:{
+        idCupon:string
+        idSuscripcion:string
+    }){
+        const user=new UserCredential(
+            'alfredo',
+            UserRoles.client
+        )
+        //! CompositionRoot
+
+        const service= new ExceptionDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+        (
+            new ValidatorDecorator
+            (
+                new SecurityDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                (
+                    new LoggerDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                    (
+                        new PerformanceDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                        (
+                            new AplyCouponApplicationService(
+                                // inject the repositories
+                                // new CouponRepository()
+                                // new SuscriptionRepsitory()
+                            ), new NativeTimer(), new NativeLogger()
+                        ),
+                        new NativeLogger()
+                    ),user,[UserRoles.client]
+                )
+                ,new AplyCuponValidator()
             )
         )
 
