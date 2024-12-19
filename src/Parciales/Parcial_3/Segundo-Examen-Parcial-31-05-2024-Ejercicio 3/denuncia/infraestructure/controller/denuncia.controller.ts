@@ -7,25 +7,34 @@ import { DenunciaProceedService } from '../../domain/domain-services/denuncia-pr
 import { ChatGptAnalizer } from '../domain-services/ai-analyser.interface.service';
 import { UuidGen } from '../../../../../../common/infraestructure/id-gen/uuid-gen';
 import { DenunciarPostAppResponseDTO } from '../../application/dto/response/aply.coupon.app.response.dto';
+import { LoggerDecorator } from '../../../../../../common/application/aspects/logger-decorator/logger-decorator';
+import { NativeLogger } from '../../../../../../common/infraestructure/logger/native-logger';
+import { PerformanceDecorator } from '../../../../../../common/application/aspects/performance-decorator/performance-decorator';
+import { NativeTimer } from '../../../../../../common/infraestructure/timer/native-timer';
+import { ExceptionDecorator } from '../../../../../../common/application/aspects/exeption-decorator/exception-decorator';
 
 export class DenunciaController{
     constructor(){}
 
     async denunciarPost(data:DenunciarPostDTO){
-        const service= new DenunciarPostService(
-            new PostgresDenunciaRepository(),
-            new PostgresUserRepository(),
-            new PostgresPostRepository(),
-            new DenunciaProceedService(
-                new ChatGptAnalizer()
-            ),
-            new UuidGen()
-        )   
+        const service=
+        new ExceptionDecorator(
+            new LoggerDecorator(
+                new PerformanceDecorator(
+                    new DenunciarPostService(
+                        new PostgresDenunciaRepository(),
+                        new PostgresUserRepository(),
+                        new PostgresPostRepository(),
+                        new DenunciaProceedService(
+                            new ChatGptAnalizer()
+                        ),
+                        new UuidGen()
+                    ),new NativeTimer(),new NativeLogger()
+                ), new NativeLogger()
+            ) 
+        ) 
         let response=await service.execute({...data})
-
-        if (response.isRight())
-            return response.getRight()
-        else throw response.getLeft()
+        return response.getRight()
     }
 
 }
