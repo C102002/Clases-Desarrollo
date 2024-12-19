@@ -12,6 +12,10 @@ export class Likes implements ValueObject<Likes> {
         return this.likes;
     }
 
+    static create(likes: number): Likes {
+        return new Likes(likes);
+    }
+
     private constructor(likes:number) {
         this.likes = likes;
     }

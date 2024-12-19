@@ -3,7 +3,7 @@ import { DomainEvent } from "../../../../../../common/domain/domain-event/domain
 import { InvalidUserException } from "../../../user/domain/domain-exception/invalid-user-exception";
 import { UserId } from "../../../user/domain/value-objetcs/user-id";
 import { Content } from "../value-objects/content";
-import { Image } from "../value-objects/image";
+import { PostImage } from "../value-objects/image";
 import { Likes } from "../value-objects/likes";
 import { PostId } from "../value-objects/post-id";
 
@@ -26,7 +26,7 @@ export class Post extends AggregateRoot<PostId>{
         postId:PostId,
         private readonly userId:UserId,
         private readonly content:Content,
-        private readonly images:Image[],
+        private readonly images:PostImage[],
         private readonly likes:Likes
     ){
         super(postId)
@@ -36,7 +36,7 @@ export class Post extends AggregateRoot<PostId>{
         postId:PostId,
         userId:UserId,
         content:Content,
-        images:Image[],
+        images:PostImage[],
         likes:Likes
     ){
         return new Post(
@@ -50,7 +50,7 @@ export class Post extends AggregateRoot<PostId>{
 
     get UserId():UserId{return this.userId}
     get Content():Content{return this.content}
-    get Images():Image[]{return this.images}
+    get Images():PostImage[]{return this.images}
     get Likes():Likes{ return this.likes}
 
 }

@@ -3,6 +3,6 @@ import { Post } from '../agregate/post';
 import { Either } from '../../../../../../helpers/Either';
 
 
-export interface IUserRepository{
+export interface IPostRepository{
     findPostById(id:PostId):Either<Error,Post>
 }
