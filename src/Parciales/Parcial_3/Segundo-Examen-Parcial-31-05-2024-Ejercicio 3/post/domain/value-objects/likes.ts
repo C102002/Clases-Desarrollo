@@ -19,4 +19,8 @@ export class Likes implements ValueObject<Likes> {
     private constructor(likes:number) {
         this.likes = likes;
     }
+
+    AreGreaterOrEqualsThanOneThousend():boolean{
+        return this.likes>=1000
+    }
 }

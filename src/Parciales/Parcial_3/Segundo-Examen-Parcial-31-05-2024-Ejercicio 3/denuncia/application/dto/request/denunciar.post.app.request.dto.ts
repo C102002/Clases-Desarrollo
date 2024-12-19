@@ -1,4 +1,4 @@
-export interface DenunciarPostDTO{
+export interface DenunciarPostAppRequestDTO{
     idDenunciante:string
     idPost:string
     text:string

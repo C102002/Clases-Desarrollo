@@ -5,6 +5,10 @@ import { DenunciaId } from "../../domain/value-objects/denuncia-id"
 import { DenunciaData } from "../data/denuncia.data"
 
 export class PostgresDenunciaRepository implements IDenunciaRepository{
+    save(denuncia: Denuncia): Either<Error, Denuncia> {
+        DenunciaData.push(denuncia)
+        return Either.makeRight(denuncia)
+    }
 
     findDenunciaById(id: DenunciaId): Either<Error, Denuncia> {
         const denuncia= DenunciaData.find(denuncia=>denuncia.getId().equals(id))
