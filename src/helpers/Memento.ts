@@ -47,6 +47,7 @@ class Historial <T>{
   undo(){
       if (this.history){
         let memento=this.history.pop()
+        if( memento)
         this.originator.restore(memento)
       }
   }
