@@ -29,7 +29,7 @@ extends BaseDecorator <I,E,O>{
 		if (result.isLeft()) 
 			this.logger.logPerformance(
 				this.WrapperName,
-				`Error execute: Error: ${result.getLeft} -- in time:`,
+				`Error execute: Error: ${result.getLeft()} -- in time:`,
 				time.toString()
 			)
 		 else 

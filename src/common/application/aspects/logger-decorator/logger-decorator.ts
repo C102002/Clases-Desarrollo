@@ -22,7 +22,7 @@ export class LoggerDecorator<
 		if (r.isLeft()) {
 			this.logger.errorLog(
 				this.WrapperName,
-				`Error execute: Error: ${r.getLeft} -- `,
+				`Error execute: Error: ${JSON.stringify(r.getLeft())} -- `,
 				JSON.stringify(input)
 			);
 		} else {

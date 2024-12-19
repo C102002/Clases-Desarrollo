@@ -12,25 +12,42 @@ import { NativeLogger } from '../../../../../../common/infraestructure/logger/na
 import { PerformanceDecorator } from '../../../../../../common/application/aspects/performance-decorator/performance-decorator';
 import { NativeTimer } from '../../../../../../common/infraestructure/timer/native-timer';
 import { ExceptionDecorator } from '../../../../../../common/application/aspects/exeption-decorator/exception-decorator';
+import { SecurityDecorator } from '../../../../../../common/application/aspects/security-decorator/security-decorator';
+import { ICredential } from '../../../../../../common/application/credential/credential.interface';
+import { UserCredential } from '../../../../../../common/infraestructure/credential/user-credential';
+import { UserRoles } from '../../../../../../aspects/domain/user/value-objects/user.roles';
+import { AuditDecorator } from '../../../../../../common/application/aspects/audit-decorator/audit-decorator';
+import { PostgresAuditContext } from '../../../../../../common/infraestructure/audit-repository/postgres-audit-repository';
+import { NativeDateHandler } from '../../../../../../common/infraestructure/date-handler/native-date-handler';
+import { DenunciarPostAppRequestDTO } from '../../application/dto/request/denunciar.post.app.request.dto';
 
 export class DenunciaController{
     constructor(){}
 
     async denunciarPost(data:DenunciarPostDTO){
+
+        const credential:ICredential=new UserCredential(
+            "pedro",UserRoles.client
+        )
+
         const service=
-        new ExceptionDecorator(
-            new LoggerDecorator(
-                new PerformanceDecorator(
-                    new DenunciarPostService(
-                        new PostgresDenunciaRepository(),
-                        new PostgresUserRepository(),
-                        new PostgresPostRepository(),
-                        new DenunciaProceedService(
-                            new ChatGptAnalizer()
-                        ),
-                        new UuidGen()
-                    ),new NativeTimer(),new NativeLogger()
-                ), new NativeLogger()
+        new ExceptionDecorator<DenunciarPostAppRequestDTO,Error,DenunciarPostAppResponseDTO>(
+            new AuditDecorator<DenunciarPostAppRequestDTO,Error,DenunciarPostAppResponseDTO>(
+                new SecurityDecorator<DenunciarPostAppRequestDTO,Error,DenunciarPostAppResponseDTO>(
+                    new LoggerDecorator<DenunciarPostAppRequestDTO,Error,DenunciarPostAppResponseDTO>(
+                        new PerformanceDecorator<DenunciarPostAppRequestDTO,Error,DenunciarPostAppResponseDTO>(
+                            new DenunciarPostService(
+                                new PostgresDenunciaRepository(),
+                                new PostgresUserRepository(),
+                                new PostgresPostRepository(),
+                                new DenunciaProceedService(
+                                new ChatGptAnalizer()
+                                ),
+                                new UuidGen()
+                            ),new NativeTimer(),new NativeLogger()
+                        ), new NativeLogger()
+                    ),credential,[UserRoles.client]
+                ),new PostgresAuditContext(),new NativeDateHandler()
             ) 
         ) 
         let response=await service.execute({...data})

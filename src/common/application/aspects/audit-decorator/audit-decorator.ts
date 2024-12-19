@@ -1,18 +1,18 @@
-import { IAuditRepository } from '../../audit-repository/audit.repository';
 import { IDateHandler } from '../../date-handler/date.handler.interface';
 import { Result } from '../../../../helpers/Result';
 import { BaseDecorator } from '../../app-service/decorator/service.base.decorator';
 import { IService } from '../../app-service/service.interface';
 import { Either } from '../../../../helpers/Either';
+import { IAuditContext } from '../../audit-context/audit.context';
 
 export class AuditDecorator<
-	I,
-	O,
-	E
-> extends BaseDecorator<I,E,O> {
+I,
+E,
+O,
+> extends BaseDecorator<I,E,O>{
 
 	constructor(decoratee: IService<I,E, O>, 
-		private audit: IAuditRepository,
+		private audit: IAuditContext,
 		private date:IDateHandler
 	){
 		super(decoratee);
