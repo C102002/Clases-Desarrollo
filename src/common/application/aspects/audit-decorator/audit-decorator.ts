@@ -4,6 +4,7 @@ import { BaseDecorator } from '../../app-service/decorator/service.base.decorato
 import { IService } from '../../app-service/service.interface';
 import { Either } from '../../../../helpers/Either';
 import { IAuditContext } from '../../audit-context/audit.context';
+import { ICredential } from '../../credential/credential.interface';
 
 export class AuditDecorator<
 I,
@@ -13,7 +14,8 @@ O,
 
 	constructor(decoratee: IService<I,E, O>, 
 		private audit: IAuditContext,
-		private date:IDateHandler
+		private date:IDateHandler,
+		private readonly userContetx:ICredential
 	){
 		super(decoratee);
 	}
@@ -22,15 +24,12 @@ O,
 		let r = await this.wrapper.execute(service);
 
 		if (!r.isLeft()) {
-			this.audit.saveLog(
-				"Time: " +
-					this.date.currentDate() +
-					" | Service: " +
-					this.WrapperName +
-					" | InputData: " +
-					JSON.stringify(service)+
-					" | ResponseData: " +
-					JSON.stringify(r.getRight)
+			await this.audit.saveLog({
+				userId:this.userContetx.getId(),
+				operation:this.WrapperName,
+				data:JSON.stringify(service),
+				madeAt:this.date.currentDate()
+			}
 			);
 		}
 

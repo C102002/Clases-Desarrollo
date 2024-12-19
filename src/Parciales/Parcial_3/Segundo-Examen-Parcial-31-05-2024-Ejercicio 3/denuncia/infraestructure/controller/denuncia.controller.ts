@@ -20,6 +20,7 @@ import { AuditDecorator } from '../../../../../../common/application/aspects/aud
 import { PostgresAuditContext } from '../../../../../../common/infraestructure/audit-repository/postgres-audit-repository';
 import { NativeDateHandler } from '../../../../../../common/infraestructure/date-handler/native-date-handler';
 import { DenunciarPostAppRequestDTO } from '../../application/dto/request/denunciar.post.app.request.dto';
+import { userData } from '../../../../../Parcial_2/data/UserData';
 
 export class DenunciaController{
     constructor(){}
@@ -27,7 +28,7 @@ export class DenunciaController{
     async denunciarPost(data:DenunciarPostDTO){
 
         const credential:ICredential=new UserCredential(
-            "pedro",UserRoles.client
+            "pedro",UserRoles.client,"id-1"
         )
 
         const service=
@@ -47,7 +48,7 @@ export class DenunciaController{
                             ),new NativeTimer(),new NativeLogger()
                         ), new NativeLogger()
                     ),credential,[UserRoles.client]
-                ),new PostgresAuditContext(),new NativeDateHandler()
+                ),new PostgresAuditContext(),new NativeDateHandler(),credential
             ) 
         ) 
         let response=await service.execute({...data})
