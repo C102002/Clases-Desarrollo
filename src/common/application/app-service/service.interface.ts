@@ -1,4 +1,4 @@
-import { Result } from '../../../helpers/Result';
-export interface IService <T,E>{
-    execute(data:T):Promise<Result<E>>
+import { Either } from '../../../helpers/Either';
+export interface IService <T,E,D>{
+    execute(data:T):Promise<Either<E,D>>
 }

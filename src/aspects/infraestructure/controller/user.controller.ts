@@ -25,13 +25,13 @@ export class UserController{
         )
         //! CompositionRoot
 
-        const service= new ExceptionDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+        const service= new ExceptionDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
         (
-            new SecurityDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+            new SecurityDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
             (
-                new LoggerDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                new LoggerDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                 (
-                    new PerformanceDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                    new PerformanceDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                     (
                         new AplyCouponApplicationService(
                             // inject the repositories
@@ -45,7 +45,7 @@ export class UserController{
         )
 
         let response= await service.execute({...data})
-        return response.getValue
+        return response.getRight
     }
 
     async aplyCouponGuarded(data:{
@@ -58,13 +58,13 @@ export class UserController{
         )
         //! CompositionRoot
 
-        const service= new ExceptionDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+        const service= new ExceptionDecorator<AplyCouponAppRequestDTO, Error, AplyCouponAppResponseDTO>
         (
-            new SecurityDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+            new SecurityDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
             (
-                new LoggerDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                new LoggerDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                 (
-                    new PerformanceDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                    new PerformanceDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                     (
                         new AplyCouponApplicationService(
                             // inject the repositories
@@ -78,7 +78,7 @@ export class UserController{
         )
 
         let response= await service.execute({...data})
-        return response.getValue
+        return response.getRight
     }
 
     async aplyCouponDTOValidator(data:{
@@ -91,15 +91,15 @@ export class UserController{
         )
         //! CompositionRoot
 
-        const service= new ExceptionDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+        const service= new ExceptionDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
         (
             new ValidatorDecorator
             (
-                new SecurityDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                new SecurityDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                 (
-                    new LoggerDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                    new LoggerDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                     (
-                        new PerformanceDecorator<AplyCouponAppRequestDTO, AplyCouponAppResponseDTO>
+                        new PerformanceDecorator<AplyCouponAppRequestDTO,Error, AplyCouponAppResponseDTO>
                         (
                             new AplyCouponApplicationService(
                                 // inject the repositories
@@ -115,6 +115,6 @@ export class UserController{
         )
 
         let response= await service.execute({...data})
-        return response.getValue
+        return response.getRight
     }
 }
