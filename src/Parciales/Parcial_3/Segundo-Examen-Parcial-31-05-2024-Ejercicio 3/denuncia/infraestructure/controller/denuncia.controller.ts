@@ -11,7 +11,7 @@ import { DenunciarPostAppResponseDTO } from '../../application/dto/response/aply
 export class DenunciaController{
     constructor(){}
 
-    async denunciarPost(data:DenunciarPostDTO):Promise<DenunciarPostAppResponseDTO>{
+    async denunciarPost(data:DenunciarPostDTO){
         const service= new DenunciarPostService(
             new PostgresDenunciaRepository(),
             new PostgresUserRepository(),
@@ -23,8 +23,9 @@ export class DenunciaController{
         )   
         let response=await service.execute({...data})
 
-        return response.getRight()
-
+        if (response.isRight())
+            return response.getRight()
+        else throw response.getLeft()
     }
 
 }

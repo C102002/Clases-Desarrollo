@@ -17,7 +17,7 @@ export class Text implements ValueObject<Text> {
     }
 
     private constructor(text: string) {
-        if (Text.length<=5)
+        if (text.length<=5)
             throw new Error('The Text lenthg is not larger of 5')
         this.text = text;
     }
