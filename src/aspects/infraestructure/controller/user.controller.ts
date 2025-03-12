@@ -21,7 +21,8 @@ export class UserController{
     }){
         const user=new UserCredential(
             'alfredo',
-            UserRoles.client
+            UserRoles.client,
+            "id1"
         )
         //! CompositionRoot
 
@@ -54,7 +55,8 @@ export class UserController{
     }){
         const user=new UserCredential(
             'alfredo',
-            UserRoles.client
+            UserRoles.client,
+            "id1"
         )
         //! CompositionRoot
 
@@ -87,7 +89,8 @@ export class UserController{
     }){
         const user=new UserCredential(
             'alfredo',
-            UserRoles.client
+            UserRoles.client,
+            "id1"
         )
         //! CompositionRoot
 
